@@ -5,3 +5,4 @@ SELECT
 FROM monthly_user_site_hits
 WHERE date_partition = DATE('2023-03-03')
 GROUP BY 1
+ 
