@@ -3,7 +3,7 @@ insert into user_devices_cumulated
 with yesterday as(
 	select *
 	from user_devices_cumulated
-	where date = '2023-01-01'::DATE
+	where date = '2023-01-30'::DATE
 )
 
 , today as(
@@ -14,11 +14,12 @@ with yesterday as(
 	FROM events e
 		join devices d 
 			on e.device_id = d.device_id
-	where date(CAST(e.event_time AS TIMESTAMP)) = '2023-01-02'::DATE
+	where date(CAST(e.event_time AS TIMESTAMP)) = '2023-01-31'::DATE
 		and user_id is not null
 	group by 1,2,3
 )
-select 
+
+SELECT
 	COALESCE(t.user_id, y.user_id) as user_id,
 	COALESCE(t.browser_type, y.browser_type) as browser_type,
 	case
@@ -33,4 +34,4 @@ from today t
 		and t.browser_type = y.browser_type;
 
 
-select * from user_devices_cumulated;
+
