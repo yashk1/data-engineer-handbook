@@ -24,9 +24,9 @@ def bucketjoin_matches_matchdetails_medalmatchesplayers(spark):
     
     
 def bucketed_match_details(spark):
-    matches_df = spark.read.csv("../../../data/matches.csv", header=True, inferSchema=True)
+    matches_df = spark.read.csv("../../../data/medals_matches_players.csv", header=True, inferSchema=True)
 
-    # matches_df.repartition(16, "match_id").sortwithinpartitions("match_id")
+    matches_df = matches_df.repartition(16, "match_id").sortWithinPartitions("match_id")
     
     matches_df.write.bucketBy(16, "match_id").saveAsTable("matches_bucketed")
     spark.sql("SELECT * FROM matches_bucketed").show(4)
@@ -40,7 +40,7 @@ def main():
         
     broadcast_maps = broadcastjoin_matches_and_maps(spark)
     broadcast_medals = broadcastjoin_medalsmatchesplayers_medals(spark)
-    bucketjoin_matches_matchdetails_medalmatchesplayers(spark)
+    # bucketjoin_matches_matchdetails_medalmatchesplayers(spark)
     bucketed_match_details(spark)
         
 if __name__ == "__main__":
